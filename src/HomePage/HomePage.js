@@ -361,9 +361,9 @@ export default function HomePage() {
                       >
                         <Button
                           variant="outlined"
-                          onClick={() => onPressAddItem(index)}
+                          onClick={() => onPressRemoveItem(index)}
                         >
-                          +
+                          -
                         </Button>
                         <Typography
                           variant="h7"
@@ -373,9 +373,9 @@ export default function HomePage() {
                         </Typography>
                         <Button
                           variant="outlined"
-                          onClick={() => onPressRemoveItem(index)}
+                          onClick={() => onPressAddItem(index)}
                         >
-                          -
+                          +
                         </Button>
                       </Grid>
                       <Typography variant="h7" sx={{ marginBottom: 2 }}>{`Rs. ${

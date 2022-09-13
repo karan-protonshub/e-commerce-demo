@@ -6,18 +6,21 @@ import "./Cart.css";
 export default function Cart() {
   const productList = useSelector((state) => state.productsListArr);
   const dispatch = useDispatch();
-  const [cartDataArr, setCartDataArr] = useState();
-  // useEffect(() => {
-  //   setData();
-  // }, []);
+  const [cartDataArr, setCartDataArr] = useState([]);
+  useEffect(() => {
+    setData();
+  }, [productList]);
 
-  // const setData = () => {
-  //   const newArr = [...productList];
-  //   newArr.filter((item) => {
-  //     return (item.isAddedToCart = true);
-  //   });
-  //   console.log("newArr :: ", newArr);
-  // };
+  const setData = () => {
+    const newArr = [];
+    productList.map((item) => {
+      if (item.isAddedToCart) {
+        newArr.push(item);
+      }
+      return item;
+    });
+    setCartDataArr(newArr);
+  };
 
   const onPressAddItem = (index) => {
     const newArr = [...productList];
@@ -53,8 +56,8 @@ export default function Cart() {
       <Container>
         <h3>Product Details</h3>
         <Grid container spacing={2} sx={{ marginBottom: 5 }}>
-          {productList.length > 0 ? (
-            productList.map((item, index) => {
+          {cartDataArr.length > 0 ? (
+            cartDataArr.map((item, index) => {
               return (
                 <>
                   <Grid item md={12}>
@@ -67,7 +70,7 @@ export default function Cart() {
                         <img src={item.imageLink} alt={item.id} />
                         <Grid item flexDirection={"row"} sx={{ marginLeft: 2 }}>
                           <h4 className="itemTitle">Product Name</h4>
-                          <h2>{`Product ${item.id}`}</h2>
+                          <h2>{`Product ${item.id + 1}`}</h2>
                         </Grid>
                         <Grid
                           item
@@ -87,9 +90,9 @@ export default function Cart() {
                           >
                             <Button
                               variant="outlined"
-                              onClick={() => onPressAddItem(index)}
+                              onClick={() => onPressRemoveItem(item.id)}
                             >
-                              +
+                              -
                             </Button>
                             <Typography
                               variant="h7"
@@ -99,14 +102,14 @@ export default function Cart() {
                             </Typography>
                             <Button
                               variant="outlined"
-                              onClick={() => onPressRemoveItem(index)}
+                              onClick={() => onPressAddItem(item.id)}
                             >
-                              -
+                              +
                             </Button>
                           </Grid>
                           <Button
                             variant="contained"
-                            onClick={() => onPressRemoveItemFromCart(index)}
+                            onClick={() => onPressRemoveItemFromCart(item.id)}
                           >
                             Remove item
                           </Button>
