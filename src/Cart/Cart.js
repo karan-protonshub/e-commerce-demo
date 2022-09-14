@@ -30,9 +30,11 @@ export default function Cart() {
 
   const onPressRemoveItem = (index) => {
     const newArr = [...productList];
-    if (newArr[index].defaultQty !== 0) {
+    if (newArr[index].defaultQty !== 1) {
       newArr[index].defaultQty = newArr[index].defaultQty - 1;
       dispatch({ type: "ADD_REMOVE_TO_CART", payload: newArr });
+    } else {
+      onPressRemoveItemFromCart(index);
     }
   };
 
@@ -54,88 +56,100 @@ export default function Cart() {
         <h1 className="headerText">My Cart</h1>
       </Grid>
       <Container>
-        <h3>Product Details</h3>
-        <Grid container spacing={2} sx={{ marginBottom: 5 }}>
-          {cartDataArr.length > 0 ? (
-            cartDataArr.map((item, index) => {
-              return (
-                <>
-                  <Grid item md={12}>
-                    <Paper elevation={2}>
-                      <Grid
-                        container
-                        flexDirection={"row"}
-                        justifyContent={"space-between"}
-                      >
-                        <img src={item.imageLink} alt={item.id} />
-                        <Grid item flexDirection={"row"} sx={{ marginLeft: 2 }}>
-                          <h4 className="itemTitle">Product Name</h4>
-                          <h2>{`Product ${item.id + 1}`}</h2>
-                        </Grid>
+        {cartDataArr.length > 0 ? (
+          <>
+            <h3>Product Details</h3>
+            <Grid container spacing={2} sx={{ marginBottom: 5 }}>
+              {cartDataArr.map((item, index) => {
+                return (
+                  <>
+                    <Grid item md={12}>
+                      <Paper elevation={2}>
                         <Grid
-                          item
+                          container
                           flexDirection={"row"}
-                          sx={{
-                            marginLeft: 2,
-                          }}
+                          justifyContent={"space-between"}
                         >
-                          <Grid alignSelf={"center"}>
-                            <h4 className="itemTitle">Quantity</h4>
+                          <img src={item.imageLink} alt={item.id} />
+                          <Grid
+                            item
+                            flexDirection={"row"}
+                            sx={{ marginLeft: 2 }}
+                          >
+                            <h4 className="itemTitle">Product Name</h4>
+                            <h2>{`Product ${item.id + 1}`}</h2>
                           </Grid>
                           <Grid
-                            container
+                            item
                             flexDirection={"row"}
-                            alignItems={"center"}
-                            sx={{ marginBottom: 2 }}
+                            sx={{
+                              marginLeft: 2,
+                            }}
                           >
+                            <Grid alignSelf={"center"}>
+                              <h4 className="itemTitle">Quantity</h4>
+                            </Grid>
+                            <Grid
+                              container
+                              flexDirection={"row"}
+                              alignItems={"center"}
+                              sx={{ marginBottom: 2 }}
+                            >
+                              <Button
+                                variant="outlined"
+                                onClick={() => onPressRemoveItem(item.id)}
+                              >
+                                -
+                              </Button>
+                              <Typography
+                                variant="h7"
+                                sx={{ marginLeft: 1, marginRight: 1 }}
+                              >
+                                {item.defaultQty}
+                              </Typography>
+                              <Button
+                                variant="outlined"
+                                onClick={() => onPressAddItem(item.id)}
+                              >
+                                +
+                              </Button>
+                            </Grid>
                             <Button
-                              variant="outlined"
-                              onClick={() => onPressRemoveItem(item.id)}
+                              variant="contained"
+                              onClick={() => onPressRemoveItemFromCart(item.id)}
                             >
-                              -
-                            </Button>
-                            <Typography
-                              variant="h7"
-                              sx={{ marginLeft: 1, marginRight: 1 }}
-                            >
-                              {item.defaultQty}
-                            </Typography>
-                            <Button
-                              variant="outlined"
-                              onClick={() => onPressAddItem(item.id)}
-                            >
-                              +
+                              Remove item
                             </Button>
                           </Grid>
-                          <Button
-                            variant="contained"
-                            onClick={() => onPressRemoveItemFromCart(item.id)}
+                          <Grid
+                            item
+                            flexDirection={"row"}
+                            sx={{ marginLeft: 2 }}
                           >
-                            Remove item
-                          </Button>
+                            <h4 className="itemTitle">Base price</h4>
+                            <h2>{item.price}</h2>
+                          </Grid>
+                          <Grid
+                            item
+                            flexDirection={"row"}
+                            sx={{ marginLeft: 2, marginRight: 2 }}
+                          >
+                            <h4 className="itemTitle">Total price</h4>
+                            <h2>{item.defaultQty * item.price}</h2>
+                          </Grid>
                         </Grid>
-                        <Grid item flexDirection={"row"} sx={{ marginLeft: 2 }}>
-                          <h4 className="itemTitle">Base price</h4>
-                          <h2>{item.price}</h2>
-                        </Grid>
-                        <Grid
-                          item
-                          flexDirection={"row"}
-                          sx={{ marginLeft: 2, marginRight: 2 }}
-                        >
-                          <h4 className="itemTitle">Total price</h4>
-                          <h2>{item.defaultQty * item.price}</h2>
-                        </Grid>
-                      </Grid>
-                    </Paper>
-                  </Grid>
-                </>
-              );
-            })
-          ) : (
+                      </Paper>
+                    </Grid>
+                  </>
+                );
+              })}
+            </Grid>
+          </>
+        ) : (
+          <Grid container justifyContent={"center"}>
             <h1>No item added to cart</h1>
-          )}
-        </Grid>
+          </Grid>
+        )}
       </Container>
     </div>
   );
