@@ -14,7 +14,7 @@ export default function Cart() {
   const setData = () => {
     const newArr = [];
     productList.map((item) => {
-      if (item.isAddedToCart) {
+      if (item.isAddedToCart && item.defaultQty > 0) {
         newArr.push(item);
       }
       return item;
